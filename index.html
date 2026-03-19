@@ -94,6 +94,7 @@
     .about-copy p strong { color: var(--text); font-weight: 600; }
     .quote { border-left: 3px solid var(--accent2); padding-left: 1.2rem; margin: 1.8rem 0; font-family: var(--serif); font-style: italic; font-size: 1.02rem; color: var(--accent); line-height: 1.6; }
     .quote-badge { display: inline-block; margin: 2rem 0; font-family: var(--serif); font-style: italic; font-size: 1rem; font-weight: 400; color: var(--dark); line-height: 1.6; border-left: 2px solid var(--dark); padding-left: 1rem; }
+    .quote-badge { display: inline-block; margin: 2rem 0; font-family: var(--serif); font-style: italic; font-size: 1rem; font-weight: 400; color: var(--dark); line-height: 1.6; border-left: 2px solid var(--dark); padding-left: 1rem; }
     .traits { display: flex; flex-direction: column; gap: 0.9rem; }
     .trait { display: flex; align-items: flex-start; gap: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem 1.3rem; transition: border-color 0.2s, transform 0.2s; }
     .trait:hover { border-color: var(--accent2); transform: translateX(4px); }
@@ -200,38 +201,14 @@
       .btn-primary { background: #2d3436 !important; color: #f8f7f4 !important; }
       .btn-ghost { color: #2d3436 !important; border-color: #636e72 !important; }
     }
-    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
-    .hamburger span { width:22px; height:2px; background:var(--accent); display:block; border-radius:2px; transition: all 0.3s; }
-    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-    .hamburger.active span:nth-child(2) { opacity: 0; }
-    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+    .hamburger { display:none; flex-direction:column; gap:6px; cursor:pointer; background:none; border:none; padding:6px 4px; }
+    .hamburger span { height:1.5px; background:var(--accent); display:block; border-radius:2px; transition: all 0.3s ease; }
+    .hamburger span:nth-child(1) { width:24px; }
+    .hamburger span:nth-child(2) { width:16px; }
+    .hamburger span:nth-child(3) { width:24px; }
 
     @media (max-width:900px) {
       .nav-links { display:none; }
-      .nav-links.open {
-        display: flex !important;
-        flex-direction: column;
-        position: fixed;
-        top: 62px;
-        left: 0;
-        right: 0;
-        background: rgba(248,247,244,0.98);
-        padding: 1.5rem 5vw 2rem;
-        border-bottom: 1px solid #dddbd8;
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        gap: 0.2rem;
-        z-index: 99;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      }
-      .nav-links.open a {
-        display: block;
-        padding: 0.75rem 0;
-        font-size: 0.95rem;
-        border-bottom: 1px solid var(--border);
-        color: var(--text) !important;
-      }
-      .nav-links.open a:last-child { border-bottom: none; }
       .hamburger { display:flex; }
       #hero { grid-template-columns:1fr; padding:7rem 5vw 4rem; gap:2.5rem; }
       .hero-card { display:none; }
@@ -259,7 +236,7 @@
 <!-- NAV -->
 <nav>
   <a href="#hero" class="nav-logo">Ankit Chauhan</a>
-  <ul class="nav-links">
+  <ul class="nav-links" id="nav-menu">
     <li><a href="#about">About</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#skills">Skills</a></li>
@@ -268,7 +245,7 @@
     <li><a href="https://medium.com/@ankitchauhan21" target="_blank">Writing</a></li>
     <li><a href="#contact-section">Contact</a></li>
   </ul>
-  <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+  <button class="hamburger" id="nav-toggle"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- HERO -->
@@ -444,6 +421,7 @@
     <div class="cert-card"><div class="cert-icon">❄️</div><div><div class="cert-name">SnowPro Core Certification</div><div class="cert-issuer">Snowflake</div><a href="https://achieve.snowflake.com/84447432-6355-4fbf-89ed-9b94342bf6e5#acc.TwJO80BC" target="_blank" class="cert-link">View credential →</a></div></div>
     <div class="cert-card"><div class="cert-icon">🔧</div><div><div class="cert-name">Alteryx Designer Core</div><div class="cert-issuer">Alteryx</div><a href="https://www.credly.com/badges/98f1a43e-a5b4-46b4-85ee-8ebea63b38a3/public_url" target="_blank" class="cert-link">View credential →</a></div></div>
     <div class="cert-card"><div class="cert-icon">🔄</div><div><div class="cert-name">Matillion Associate</div><div class="cert-issuer">Matillion</div><a href="https://www.credly.com/badges/1526adf1-3c1a-43e4-8314-474b83786153/public_url" target="_blank" class="cert-link">View credential →</a></div></div>
+    <div class="cert-card"><div class="cert-icon">🔄</div><div><div class="cert-name">Matillion Associate</div><div class="cert-issuer">Matillion</div><a href="https://www.credly.com/badges/1526adf1-3c1a-43e4-8314-474b83786153/public_url" target="_blank" class="cert-link">View credential →</a></div></div>
   </div>
 </div>
 
@@ -483,30 +461,67 @@
   <div>© 2025 <span>Ankit Chauhan</span>. Built with care.</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  function toggleNav() {
-    const links = document.querySelector('.nav-links');
-    const hamburger = document.querySelector('.hamburger');
-    links.classList.toggle('open');
-    hamburger.classList.toggle('active');
+<script>
+(function() {
+  var btn = document.getElementById('nav-toggle');
+  var menu = document.getElementById('nav-menu');
+  if (!btn || !menu) return;
+
+  function closeMenu() {
+    menu.removeAttribute('style');
   }
 
-  // Close nav when a link is clicked
-  document.querySelectorAll('.nav-links a').forEach(a => {
-    a.addEventListener('click', () => {
-      document.querySelector('.nav-links').classList.remove('open');
-      document.querySelector('.hamburger').classList.remove('active');
-    });
-  });
+  function openMenu() {
+    menu.style.display = 'flex';
+    menu.style.flexDirection = 'column';
+    menu.style.position = 'fixed';
+    menu.style.top = '62px';
+    menu.style.left = '0';
+    menu.style.right = '0';
+    menu.style.background = 'rgba(248,247,244,0.98)';
+    menu.style.padding = '1.5rem 5vw 2rem';
+    menu.style.borderBottom = '1px solid #dddbd8';
+    menu.style.gap = '1.2rem';
+    menu.style.zIndex = '9999';
+    menu.style.listStyle = 'none';
+  }
 
-  // Close nav when clicking outside
-  document.addEventListener('click', (e) => {
-    const links = document.querySelector('.nav-links');
-    const hamburger = document.querySelector('.hamburger');
-    if (!links.contains(e.target) && !hamburger.contains(e.target)) {
-      links.classList.remove('open');
-      hamburger.classList.remove('active');
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (menu.hasAttribute('style') && menu.style.display === 'flex') {
+      closeMenu();
+    } else {
+      openMenu();
     }
   });
-  window.addEventListener('scroll', () => {
-    let
+
+  // Close on nav link click
+  var anchors = menu.querySelectorAll('a');
+  for (var i = 0; i < anchors.length; i++) {
+    anchors[i].addEventListener('click', function() {
+      closeMenu();
+    });
+  }
+
+  // Close on outside click
+  document.addEventListener('click', function(e) {
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+      closeMenu();
+    }
+  });
+
+  // Close on resize to desktop width
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 900) {
+      closeMenu();
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeMenu();
+  });
+})();
+</script>
+</body>
+</html>
