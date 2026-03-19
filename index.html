@@ -200,11 +200,38 @@
       .btn-primary { background: #2d3436 !important; color: #f8f7f4 !important; }
       .btn-ghost { color: #2d3436 !important; border-color: #636e72 !important; }
     }
-    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
-    .hamburger span { width:22px; height:2px; background:var(--accent); display:block; border-radius:2px; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+    .hamburger span { width:22px; height:2px; background:var(--accent); display:block; border-radius:2px; transition: all 0.3s; }
+    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
     @media (max-width:900px) {
       .nav-links { display:none; }
+      .nav-links.open {
+        display: flex !important;
+        flex-direction: column;
+        position: fixed;
+        top: 62px;
+        left: 0;
+        right: 0;
+        background: rgba(248,247,244,0.98);
+        padding: 1.5rem 5vw 2rem;
+        border-bottom: 1px solid #dddbd8;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        gap: 0.2rem;
+        z-index: 99;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      }
+      .nav-links.open a {
+        display: block;
+        padding: 0.75rem 0;
+        font-size: 0.95rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--text) !important;
+      }
+      .nav-links.open a:last-child { border-bottom: none; }
       .hamburger { display:flex; }
       #hero { grid-template-columns:1fr; padding:7rem 5vw 4rem; gap:2.5rem; }
       .hero-card { display:none; }
@@ -459,16 +486,27 @@
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   function toggleNav() {
     const links = document.querySelector('.nav-links');
-    const open = links.style.display === 'flex';
-    links.style.display = open ? 'none' : 'flex';
-    if (!open) Object.assign(links.style, {
-      flexDirection:'column', position:'fixed',
-      top:'62px', left:'0', right:'0',
-      background:'rgba(248,247,244,0.97)',
-      padding:'1.5rem 5vw 2rem',
-      borderBottom:'1px solid #dddbd8',
-      backdropFilter:'blur(14px)', gap:'1.2rem'
-    });
+    const hamburger = document.querySelector('.hamburger');
+    links.classList.toggle('open');
+    hamburger.classList.toggle('active');
   }
+
+  // Close nav when a link is clicked
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.querySelector('.nav-links').classList.remove('open');
+      document.querySelector('.hamburger').classList.remove('active');
+    });
+  });
+
+  // Close nav when clicking outside
+  document.addEventListener('click', (e) => {
+    const links = document.querySelector('.nav-links');
+    const hamburger = document.querySelector('.hamburger');
+    if (!links.contains(e.target) && !hamburger.contains(e.target)) {
+      links.classList.remove('open');
+      hamburger.classList.remove('active');
+    }
+  });
   window.addEventListener('scroll', () => {
     let
